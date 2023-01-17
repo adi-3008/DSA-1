@@ -1,20 +1,21 @@
 package com.Array.SlidingWindow;
 
+import java.util.Arrays;
+
 public class MaxSubArray {
 
     // brute force approach O(N^2) time complexity.
     public static int bruteFore(int[] set){
-        int ans = set[0];
+
+        int maxSum = Integer.MIN_VALUE;
         for (int j = 0; j < set.length; j++) {
-            int temp = 0;
-            int maxSum = 0;
+            int currSum = 0;
             for (int k = j; k < set.length; k++) {
-                temp += set[k];
-                maxSum = Math.max(maxSum, temp);
+                currSum += set[k];
+                maxSum = Math.max(maxSum, currSum);
             }
-            ans = Math.max(ans, maxSum);
         }
-        return ans;
+        return maxSum;
     }
 
     // like sliding window O(N) time.
@@ -39,9 +40,46 @@ public class MaxSubArray {
         return maxSum;
     }
 
+    // using dynamic programming.
+    public static int maxSubArray(int[] nums, int i, int mustPeak, int[][] dp){
+        if(i >= nums.length)
+            return mustPeak == 1 ? 0 : (int)-1e5;
+        if (dp[mustPeak][i] != Integer.MIN_VALUE)
+            return dp[mustPeak][i];
+        if(mustPeak == 1)
+            return dp[mustPeak][i] = Math.max(0, nums[i] + maxSubArray(nums, i + 1, 1, dp));
+        return dp[mustPeak][i] = Math.max(maxSubArray(nums, i + 1, 0, dp), nums[i] + maxSubArray(nums, i + 1, 1, dp));
+    }
+
+    public static int maximumSum(int[] arr) {
+        int maxSum = Integer.MIN_VALUE;
+
+
+        for(int i = 0; i < arr.length; i++){
+            int currSum = 0;
+            for(int r = 0; r < arr.length; r++){
+                if(i != r){
+                    currSum += arr[r];
+                    maxSum = Math.max(currSum, maxSum);
+                    if(currSum < 0)
+                        currSum = 0;
+                }
+
+            }
+        }
+        return maxSum;
+    }
+
     public static void main(String[] args) {
         int[] set = {-2, -1, -3, 4,-1, 2, 1, -5, 4};
-        System.out.println(bruteFore(set));
-        System.out.println(maxSubArray(set));
+//        System.out.println(bruteFore(set));
+//        System.out.println(maxSubArray(set));
+//        int[][] dp = new int[2][set.length];
+//        for(int[] arr : dp)
+//            Arrays.fill(arr, Integer.MIN_VALUE);
+//        System.out.println(maxSubArray(set, 0, 0, dp));
+
+        int[] arr = {100,30,1,987,400,200,9};
+        System.out.println(maximumSum(arr));
     }
 }
