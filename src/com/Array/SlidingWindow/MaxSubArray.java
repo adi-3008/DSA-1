@@ -24,6 +24,9 @@ public class MaxSubArray {
         int currSum = 0;
 
         for (int num : nums) {
+            if (currSum < 0)
+                currSum = 0;
+
             currSum += num;
             maxSum = Math.max(maxSum, currSum);
 
@@ -33,8 +36,7 @@ public class MaxSubArray {
             // for e.g. {1, 2, -4, 3, 5}   currSum unto element -4 is -1, so we will not
             // consider -4 in it consider next sub array starting from 3 so reset
             // currSum to zero.
-            if (currSum < 0)
-                currSum = 0;
+
         }
 
         return maxSum;
@@ -71,9 +73,9 @@ public class MaxSubArray {
     }
 
     public static void main(String[] args) {
-        int[] set = {-2, -1, -3, 4,-1, 2, 1, -5, 4};
-//        System.out.println(bruteFore(set));
-//        System.out.println(maxSubArray(set));
+        int[] set = {1, -2, -4, 3, 5};
+        System.out.println(bruteFore(set));
+        System.out.println(maxSubArray(set));
 //        int[][] dp = new int[2][set.length];
 //        for(int[] arr : dp)
 //            Arrays.fill(arr, Integer.MIN_VALUE);
